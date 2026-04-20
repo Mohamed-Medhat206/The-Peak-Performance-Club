@@ -57,3 +57,10 @@ class Equipment(baseModel):
     def __str__(self):
         return self.name
 
+
+class DamagedEquipments(Equipment):
+    class Meta:
+        proxy = True
+        verbose_name = "Damaged Equipment"
+        verbose_name_plural = "Damaged Equipment"
+
