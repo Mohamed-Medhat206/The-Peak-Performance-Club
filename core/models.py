@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class baseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,13 +35,19 @@ class Trainer(baseModel):
 
 class GymClass(baseModel):
     title = models.CharField(max_length=100)
-    base_price = models.DecimalField(max_digits=10, decimal_places=2)
+    base_price = models.FloatField()
     start_date = models.DateField()
     trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     members = models.ManyToManyField(Member, related_name='gym_classes')
 
     def __str__(self):
         return self.title
+
+
+    def calculate_discount(self):
+        if self.start_date > (timezone.now().date() + timezone.timedelta(days=30)):
+            return self.base_price * 0.8
+        return self.base_price
 
 class Equipment(baseModel):
     name = models.CharField(max_length=100)
@@ -49,3 +56,4 @@ class Equipment(baseModel):
 
     def __str__(self):
         return self.name
+
