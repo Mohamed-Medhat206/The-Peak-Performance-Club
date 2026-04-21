@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.db.models import Count
+from decimal import Decimal
 
 class baseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -54,7 +55,7 @@ class TrindingManager(models.Manager):
 
 class GymClass(baseModel):
     title = models.CharField(max_length=100)
-    base_price = models.FloatField()
+    base_price = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField()
     trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     members = models.ManyToManyField(Member, related_name='gym_classes')
@@ -67,7 +68,7 @@ class GymClass(baseModel):
 
     def calculate_discount(self):
         if self.start_date > (timezone.now().date() + timezone.timedelta(days=30)):
-            return self.base_price * 0.8
+            return self.base_price * Decimal('0.8')
         return self.base_price
 
 
