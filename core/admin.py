@@ -22,6 +22,6 @@ class GymClassAdmin(admin.ModelAdmin):
 
 @admin.register(DamagedEquipments)
 class DamagedEquipments(admin.ModelAdmin):
-    def get_queryset(self, request):
+    def get_queryset(self):
         return Equipment.objects.filter(is_damaged=True)
     
